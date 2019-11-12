@@ -1,6 +1,15 @@
 ﻿@page "/learnblazor"
-<h3>LearnBlazor</h3>
+
+<h3 class="text-info pb-3">@WelcomeText</h3>
+
+
+<p> On Change &nbsp; <input @bind="name" /></p>
+<p> On Spontaneous <input @bind="name" @bind:event="oninput" /></p>
+
+<p>I am @(name!=null?name:"_____")</p>
+
 
 @code {
-
+    string name="Spark";
+    string WelcomeText = "Time to learn Blazor!";
 }
