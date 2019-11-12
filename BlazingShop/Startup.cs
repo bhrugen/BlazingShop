@@ -15,6 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using BlazingShop.Areas.Identity;
 using BlazingShop.Data;
+using BlazingShop.Services;
 
 namespace BlazingShop
 {
