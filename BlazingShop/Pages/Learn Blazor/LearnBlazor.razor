@@ -1,4 +1,5 @@
-﻿@page "/learnblazor"
+﻿@inherits LearnBlazorBase
+@page "/learnblazor"
 
 <h3 class="text-info pb-3">@WelcomeText</h3>
 
@@ -8,8 +9,5 @@
 
 <p>I am @(name!=null?name:"_____")</p>
 
+<p><button @onclick="getName">Suprise Me!</button></p>
 
-@code {
-    string name="Spark";
-    string WelcomeText = "Time to learn Blazor!";
-}
