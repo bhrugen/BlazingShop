@@ -103,33 +103,38 @@ else
 @code {
 
     List<Category> categories;
-    Category objCategory = new Category();
+    List<Product> products;
+    Product objProduct = new Product();
     bool ShowPopup = false;
+    public byte[] ImageUploaded { get; set; }
 
     protected override void OnInitialized()
     {
-        categories = Service.GetCategories();
+        products = Service.GetProducts();
     }
 
-    void AddNewCategory()
+    void AddNewProduct()
     {
-        objCategory = new Category();
-        objCategory.Id = 0;
+        objProduct = new Product();
+        categories = Service.GetCategoryList();
+        objProduct.CategoryId = categories.ToList()[0].Id;
+        objProduct.Id = 0;
         ShowPopup = true;
     }
 
-    void EditCategory(Category category)
+    void EditProduct(Product product)
     {
-        objCategory = category;
+        objProduct = product;
+        categories = Service.GetCategoryList();
         ShowPopup = true;
     }
 
-    void DeleteCategory()
+    void DeleteProduct()
     {
         ShowPopup = false;
-        Service.DeleteCategory(objCategory);
-        categories.Clear();
-        categories = Service.GetCategories();
+        Service.DeleteProduct(objProduct);
+        products.Clear();
+        products = Service.GetProducts();
     }
 
     void ClosePopup()
@@ -141,19 +146,23 @@ else
     {
         var result = false;
         ShowPopup = false;
-
-
-        if (objCategory.Id > 0)
+        if (ImageUploaded != null)
         {
-            result = Service.UpdateCategory(objCategory);
+            objProduct.Image = ImageUploaded;
+            ImageUploaded = null;
+        }
+
+        if (objProduct.Id > 0)
+        {
+            result = Service.UpdateProduct(objProduct);
         }
         else
         {
-            result = Service.CreateCategory(objCategory);
+            result = Service.CreateProduct(objProduct);
         }
 
 
-        categories = Service.GetCategories();
+        products = Service.GetProducts();
     }
 
 }
