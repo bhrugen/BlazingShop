@@ -38,7 +38,7 @@ else
                     <tr>
                         <td>@obj.Name</td>
                         <td>
-                            <button class="btn btn-primary" style="width:150px" @onclick="(()=> EditCategory(obj))">
+                            <button class="btn btn-primary" style="width:150px" @onclick="(() => EditCategory(obj))">
                                 Edit
                             </button>
                         </td>
@@ -57,7 +57,7 @@ else
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h3 class="text-info">@(objCategory.Id !=0 ? "Update" : "Create") Category</h3>
+                    <h3 class="text-info">@(objCategory.Id != 0 ? "Update" : "Create") Category</h3>
                     <button type="button" class="close" @onclick="ClosePopup">
                         <span aria-hidden="true">X</span>
                     </button>
@@ -163,6 +163,28 @@ else
 
 
         products = Service.GetProducts();
+    }
+
+    async Task HandleSelection(IFileListEntry[] files)
+    {
+        var file = files.FirstOrDefault();
+        if (file != null)
+        {
+            var ms = new MemoryStream();
+            await file.Data.CopyToAsync(ms);
+            ImageUploaded = ms.ToArray();
+        }
+    }
+
+    string convertImageToDisplay(byte[] image)
+    {
+        if (image != null)
+        {
+            var base64 = Convert.ToBase64String(image);
+            var finalStr = string.Format("data:image/jpg;base64,{0}", base64);
+            return finalStr;
+        }
+        return "";
     }
 
 }
