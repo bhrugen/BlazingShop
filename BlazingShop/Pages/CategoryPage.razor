@@ -17,7 +17,7 @@ else
             </div>
             <div class="col-3">
                 <button class="btn btn-info form-control" @onclick="AddNewCategory">
-                    Add New Product
+                    Add New Category
                 </button>
             </div>
         </div>
@@ -61,6 +61,8 @@ else
                     </button>
                 </div>
                 <div class="modal-body">
+                    <DataAnnotationsValidator/>
+                    <ValidationSummary/>
                     <div class="row">
                         <div class="col-9">
                             <div class="row py-2">
