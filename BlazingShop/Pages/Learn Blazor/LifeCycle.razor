@@ -1,0 +1,58 @@
+﻿@page "/lifecycle"
+@implements IDisposable
+
+<h3 class="text-info">LifeCycle</h3>
+<br />
+@foreach (var item in EventType)
+{
+    @item
+    <hr />
+}
+
+
+@code {
+    string name;
+    List<string> EventType = new List<string>();
+    protected override void OnInitialized()
+    {
+        EventType.Add("OnInitialized is called");
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        EventType.Add("OnInitializedAsync is called");
+        await Task.Delay(1);
+    }
+    protected override void OnParametersSet()
+    {
+        EventType.Add("OnParameterSet is called");
+    }
+    protected override async Task OnParametersSetAsync()
+    {
+        EventType.Add("OnParametersSetAsync is called");
+        await Task.Delay(1);
+    }
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            EventType.Add("OnAfterRenderAsync is called");
+            await Task.Delay(1);
+        }
+    }
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            EventType.Add("OnAfterRender is called");
+        }
+    }
+    protected override bool ShouldRender()
+    {
+        EventType.Add("ShouldRender is called");
+        return true;
+    }
+    public void Dispose()
+    {
+
+    }
+}
