@@ -81,7 +81,9 @@ else
                                     <select @onchange="CategorySelectionChanged" class="form-control">
                                         @foreach(var categoryInd in categories)
                                         {
-                                            <option value="@categoryInd.Id">@categoryInd.Name</option>
+                                            <option value="@categoryInd.Id" 
+                                                    selected="@(categoryInd.Id==objProduct.CategoryId? true: false)">
+                                            @categoryInd.Name</option>
                                         }
                                     </select>
                                 </div>
@@ -134,6 +136,9 @@ else
                                     </div>
                                 }
                             </div>
+                        </div>
+                        <div class="col-3">
+                            <img src="@convertImageToDisplay(objProduct.Image)" width="100%" />
                         </div>
                     </div>
                 </div>
