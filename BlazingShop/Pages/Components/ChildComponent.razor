@@ -1,0 +1,16 @@
+﻿<div class="panel panel-default">
+    <div class="panel-heading alert alert-info">@Title</div>
+    <div class="panel-body alert alert-success">@ChildContent</div>
+
+    <button class="btn btn-danger">
+        Button to be clicked!
+    </button>
+</div>
+
+@code {
+    [Parameter]
+    public string Title { get; set; }
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+}
