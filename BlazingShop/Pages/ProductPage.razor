@@ -5,151 +5,158 @@
 @using System.IO
 
 @inherits OwningComponentBase<ProductService>
-
-@if (products == null)
-{
-    <p><em>Loading...</em></p>
-}
-else
-{
-    <div class="container border p-3">
-        <div class="row">
-            <div class="col-5">
-                <h3 class="text-info">Product List</h3>
-            </div>
-            <div class="col-3">
-                <button class="btn btn-info form-control" @onclick="AddNewProduct">
-                    Add New Product
-                </button>
-            </div>
-        </div>
-
-        <div class="row pt-4">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Product Name</th>
-                        <th>Price</th>
-                        <th>Shade Color</th>
-                        <th>Category</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var obj in products)
-                    {
-                    <tr>
-                        <td>@obj.Name</td>
-                        <td>@obj.Price</td>
-                        <td>@obj.ShadeColor</td>
-                        <td>@obj.Category.Name</td>
-                        <td>
-                            <button class="btn btn-primary" style="width:150px" @onclick="(() => EditProduct(obj))">
-                                Edit
-                            </button>
-                        </td>
-                    </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-    </div>
-}
-@if (ShowPopup)
-{
-<div class="modal" tabindex="-1" style="display:block" role="dialog">
-    <EditForm Model="@objProduct" OnValidSubmit="@ValidSubmit">
-
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 class="text-info">@(objProduct.Id != 0 ? "Update" : "Create") Product</h3>
-                    <button type="button" class="close" @onclick="ClosePopup">
-                        <span aria-hidden="true">X</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <DataAnnotationsValidator/>
-                    <div class="row">
-                        <div class="col-9">
-                            <div class="row py-2">
-                                <div class="col-4">
-                                    Category Name
-                                </div>
-                                <div class="col-8">
-                                    <select @onchange="CategorySelectionChanged" class="form-control">
-                                        @foreach(var categoryInd in categories)
-                                        {
-                                            <option value="@categoryInd.Id" 
-                                                    selected="@(categoryInd.Id==objProduct.CategoryId? true: false)">
-                                            @categoryInd.Name</option>
-                                        }
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="row py-2">
-                                <div class="col-4">
-                                    Product Name
-                                </div>
-                                <div class="col-8">
-                                    <InputText class="form-control" @bind-Value="objProduct.Name" />
-                                    <ValidationMessage For="@(()=> objProduct.Name)"></ValidationMessage>
-                                </div>
-                            </div>
-                            <div class="row py-2">
-                                <div class="col-4">
-                                    Price
-                                </div>
-                                <div class="col-8">
-                                    <input class="form-control" type="text" @bind="objProduct.Price" />
-                                    <ValidationMessage For="@(()=> objProduct.Price)"></ValidationMessage>
-                                </div>
-                            </div>
-                            <div class="row py-2">
-                                <div class="col-4">
-                                    Shade Color
-                                </div>
-                                <div class="col-8">
-                                    <input class="form-control" type="text" @bind="objProduct.ShadeColor" />
-                                    <ValidationMessage For="@(()=> objProduct.ShadeColor)"></ValidationMessage>
-                                </div>
-                            </div>
-                            <div class="row py-2">
-                                <div class="col-4">
-                                    Image
-                                </div>
-                                <div class="col-8">
-                                    <InputFile OnChange="HandleSelection"></InputFile>
-                                </div>
-                            </div>
-                            <div class="row py-2">
-
-                                <div class="offset-4 col">
-                                    <button class="btn btn-primary form-control" type="submit">Submit</button>
-                                </div>
-                                @if (objProduct.Id > 0)
-                                {
-                                    <div class="col">
-                                        <button class="btn btn-danger form-control"
-                                                @onclick="DeleteProduct"
-                                                type="submit">
-                                            Delete
-                                        </button>
-                                    </div>
-                                }
-                            </div>
-                        </div>
-                        <div class="col-3">
-                            <img src="@convertImageToDisplay(objProduct.Image)" width="100%" />
-                        </div>
+<AuthorizeView>
+    <Authorized>
+        @if (products == null)
+        {
+            <p><em>Loading...</em></p>
+        }
+        else
+        {
+            <div class="container border p-3">
+                <div class="row">
+                    <div class="col-5">
+                        <h3 class="text-info">Product List</h3>
+                    </div>
+                    <div class="col-3">
+                        <button class="btn btn-info form-control" @onclick="AddNewProduct">
+                            Add New Product
+                        </button>
                     </div>
                 </div>
-            </div>
-        </div>
 
-    </EditForm>
-</div>
-}
+                <div class="row pt-4">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Product Name</th>
+                                <th>Price</th>
+                                <th>Shade Color</th>
+                                <th>Category</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var obj in products)
+                            {
+                                <tr>
+                                    <td>@obj.Name</td>
+                                    <td>@obj.Price</td>
+                                    <td>@obj.ShadeColor</td>
+                                    <td>@obj.Category.Name</td>
+                                    <td>
+                                        <button class="btn btn-primary" style="width:150px" @onclick="(() => EditProduct(obj))">
+                                            Edit
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        }
+        @if (ShowPopup)
+        {
+            <div class="modal" tabindex="-1" style="display:block" role="dialog">
+                <EditForm Model="@objProduct" OnValidSubmit="@ValidSubmit">
+
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h3 class="text-info">@(objProduct.Id != 0 ? "Update" : "Create") Product</h3>
+                                <button type="button" class="close" @onclick="ClosePopup">
+                                    <span aria-hidden="true">X</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <DataAnnotationsValidator />
+                                <div class="row">
+                                    <div class="col-9">
+                                        <div class="row py-2">
+                                            <div class="col-4">
+                                                Category Name
+                                            </div>
+                                            <div class="col-8">
+                                                <select @onchange="CategorySelectionChanged" class="form-control">
+                                                    @foreach (var categoryInd in categories)
+                                                    {
+                                                        <option value="@categoryInd.Id"
+                                                                selected="@(categoryInd.Id==objProduct.CategoryId? true: false)">
+                                                            @categoryInd.Name
+                                                        </option>
+                                                    }
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="row py-2">
+                                            <div class="col-4">
+                                                Product Name
+                                            </div>
+                                            <div class="col-8">
+                                                <InputText class="form-control" @bind-Value="objProduct.Name" />
+                                                <ValidationMessage For="@(()=> objProduct.Name)"></ValidationMessage>
+                                            </div>
+                                        </div>
+                                        <div class="row py-2">
+                                            <div class="col-4">
+                                                Price
+                                            </div>
+                                            <div class="col-8">
+                                                <input class="form-control" type="text" @bind="objProduct.Price" />
+                                                <ValidationMessage For="@(()=> objProduct.Price)"></ValidationMessage>
+                                            </div>
+                                        </div>
+                                        <div class="row py-2">
+                                            <div class="col-4">
+                                                Shade Color
+                                            </div>
+                                            <div class="col-8">
+                                                <input class="form-control" type="text" @bind="objProduct.ShadeColor" />
+                                                <ValidationMessage For="@(()=> objProduct.ShadeColor)"></ValidationMessage>
+                                            </div>
+                                        </div>
+                                        <div class="row py-2">
+                                            <div class="col-4">
+                                                Image
+                                            </div>
+                                            <div class="col-8">
+                                                <InputFile OnChange="HandleSelection"></InputFile>
+                                            </div>
+                                        </div>
+                                        <div class="row py-2">
+
+                                            <div class="offset-4 col">
+                                                <button class="btn btn-primary form-control" type="submit">Submit</button>
+                                            </div>
+                                            @if (objProduct.Id > 0)
+                                            {
+                                                <div class="col">
+                                                    <button class="btn btn-danger form-control"
+                                                            @onclick="DeleteProduct"
+                                                            type="submit">
+                                                        Delete
+                                                    </button>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                    <div class="col-3">
+                                        <img src="@convertImageToDisplay(objProduct.Image)" width="100%" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </EditForm>
+            </div>
+        }
+    </Authorized>
+    <NotAuthorized>
+        <p>You're not signed in.</p>
+    </NotAuthorized>
+</AuthorizeView>
 
 
 @code {
@@ -241,7 +248,7 @@ else
 
     void CategorySelectionChanged(ChangeEventArgs e)
     {
-        if(int.TryParse(e.Value.ToString(),out int id))
+        if (int.TryParse(e.Value.ToString(), out int id))
         {
             objProduct.CategoryId = id;
         }

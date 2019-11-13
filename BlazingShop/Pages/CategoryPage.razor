@@ -3,50 +3,62 @@
 @using BlazingShop.Services
 
 @inherits OwningComponentBase<CategoryService>
+@*@inject AuthenticationStateProvider AuthenticationStateProvider*@
 
-@if (categories == null)
-{
-    <p><em>Loading or No categories exist</em></p>
-}
-else
-{
-    <div class="container border p-3">
-        <div class="row">
-            <div class="col-5">
-                <h3 class="text-info">Category List</h3>
-            </div>
-            <div class="col-3">
-                <button class="btn btn-info form-control" @onclick="AddNewCategory">
-                    Add New Category
-                </button>
-            </div>
-        </div>
-
-        <div class="row pt-4">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Category Name</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var obj in categories)
-                    {
-                    <tr>
-                        <td>@obj.Name</td>
-                        <td>
-                            <button class="btn btn-primary" style="width:150px" @onclick="(()=> EditCategory(obj))">
-                                Edit
+    <AuthorizeView>
+        <Authorized>
+            @if (categories == null)
+            {
+                <p><em>Loading or No categories exist</em></p>
+            }
+            else
+            {
+                <div class="container border p-3">
+                    <div class="row">
+                        <div class="col-5">
+                            <h3 class="text-info">Category List</h3>
+                        </div>
+                        <div class="col-3">
+                            <button class="btn btn-info form-control" @onclick="AddNewCategory">
+                                Add New Category
                             </button>
-                        </td>
-                    </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-    </div>
-}
+                        </div>
+                    </div>
+
+                    <div class="row pt-4">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Category Name</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var obj in categories)
+                                {
+                                    <tr>
+                                        <td>@obj.Name</td>
+                                        <td>
+                                            <button class="btn btn-primary" style="width:150px" @onclick="(()=> EditCategory(obj))">
+                                                Edit
+                                            </button>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            }
+        </Authorized>
+        <NotAuthorized>
+            <p>You're not signed in.</p>
+        </NotAuthorized>
+    </AuthorizeView>
+
+
+
+
 @if (ShowPopup)
 {
 <div class="modal" tabindex="-1" style="display:block" role="dialog">
@@ -100,12 +112,17 @@ else
 
 @code {
 
+    [CascadingParameter]
+    private Task<AuthenticationState> authenticationState { get; set; }
+
     List<Category> categories;
     Category objCategory = new Category();
     bool ShowPopup = false;
 
     protected override void OnInitialized()
     {
+        //var user = (await authenticationState).User;
+        //var emailOfUser = user.Identity.Name;
         categories = Service.GetCategories();
     }
 
