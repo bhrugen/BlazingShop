@@ -1,0 +1,39 @@
+﻿@using BlazingShop.Data
+
+
+<div class="col-3">
+    <div class=" card-background card mb-4">
+        <div class="card-header">
+            <h4 class="my-0 font-weight-normal text-center">
+                <label style="font-size:23px;color:steelblue;">@product.Name</label>
+            </h4>
+        </div>
+
+        <img class="card-img-top" style="height:100%;" src="@convertImageToDisplay(product.Image)" alt="Card Image" />
+        <div class="card-body card-background" style="background-color:#F7F7F7">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                    <label style="font-size:20px; color:#a51313"><b>@product.Price</b>/sq.ft</label>
+                </div>
+                <NavLink href="@($"/details/{product.Id}")" class="btn btn-success pull-right btn-outline-info text-white">Details</NavLink>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public Product product { get; set; }
+
+    string convertImageToDisplay(byte[] image)
+    {
+        if (image != null)
+        {
+            var base64 = Convert.ToBase64String(image);
+            var finalStr = string.Format("data:image/jpg;base64,{0}", base64);
+            return finalStr;
+        }
+        return "";
+    }
+}
