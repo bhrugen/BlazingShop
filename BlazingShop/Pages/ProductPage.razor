@@ -63,7 +63,7 @@ else
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h3 class="text-info">@(objProduct.Id != 0 ? "Update" : "Create") Category</h3>
+                    <h3 class="text-info">@(objProduct.Id != 0 ? "Update" : "Create") Product</h3>
                     <button type="button" class="close" @onclick="ClosePopup">
                         <span aria-hidden="true">X</span>
                     </button>
@@ -78,7 +78,12 @@ else
                                     Category Name
                                 </div>
                                 <div class="col-8">
-
+                                    <select @onchange="CategorySelectionChanged" class="form-control">
+                                        @foreach(var categoryInd in categories)
+                                        {
+                                            <option value="@categoryInd.Id">@categoryInd.Name</option>
+                                        }
+                                    </select>
                                 </div>
                             </div>
                             <div class="row py-2">
@@ -225,6 +230,14 @@ else
             return finalStr;
         }
         return "";
+    }
+
+    void CategorySelectionChanged(ChangeEventArgs e)
+    {
+        if(int.TryParse(e.Value.ToString(),out int id))
+        {
+            objProduct.CategoryId = id;
+        }
     }
 
 }
