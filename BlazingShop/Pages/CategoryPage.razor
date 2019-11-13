@@ -36,7 +36,7 @@ else
                     <tr>
                         <td>@obj.Name</td>
                         <td>
-                            <button class="btn btn-primary" style="width:150px">
+                            <button class="btn btn-primary" style="width:150px" @onclick="(()=> EditCategory(obj))">
                                 Edit
                             </button>
                         </td>
@@ -55,7 +55,7 @@ else
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h3 class="text-info">Category</h3>
+                    <h3 class="text-info">@(objCategory.Id !=0 ? "Update" : "Create") Category</h3>
                     <button type="button" class="close" @onclick="ClosePopup">
                         <span aria-hidden="true">X</span>
                     </button>
@@ -105,7 +105,14 @@ else
 
     void AddNewCategory()
     {
+        objCategory = new Category();
         objCategory.Id = 0;
+        ShowPopup = true;
+    }
+
+    void EditCategory(Category category)
+    {
+        objCategory = category;
         ShowPopup = true;
     }
 
@@ -118,7 +125,17 @@ else
     {
         var result = false;
         ShowPopup = false;
-        result = Service.CreateCategory(objCategory);
+
+
+        if (objCategory.Id > 0)
+        {
+            result = Service.UpdateCategory(objCategory);
+        }
+        else
+        {
+            result = Service.CreateCategory(objCategory);
+        }
+        
 
         categories = Service.GetCategories();
     }
