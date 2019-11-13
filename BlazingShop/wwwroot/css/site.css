@@ -181,3 +181,7 @@ app {
         display: block;
     }
 }
+
+.card-background{
+    background:url('/images/white-waves.png');
+}

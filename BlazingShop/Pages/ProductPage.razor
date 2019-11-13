@@ -6,7 +6,7 @@
 
 @inherits OwningComponentBase<ProductService>
 <AuthorizeView>
-    <Authorized>
+    <Authorized Context="Auth">
         @if (products == null)
         {
             <p><em>Loading...</em></p>

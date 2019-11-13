@@ -1,5 +1,24 @@
 ﻿@page "/"
 
-<h1>Hello, world!</h1>
+@using BlazingShop.Services;
+@using BlazingShop.Data;
+@inherits OwningComponentBase<ProductService>
 
-Welcome to your new app.
+
+<div class="row">
+
+    @foreach(var product in listProduct)
+    {
+
+    }
+
+</div>
+
+
+@code{
+    List<Product> listProduct = new List<Product>();
+    protected override void OnInitialized()
+    {
+        listProduct = Service.GetProducts();
+    }
+}

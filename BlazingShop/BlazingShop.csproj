@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <Folder Include="Initializer\" />
+    <Folder Include="wwwroot\images\" />
   </ItemGroup>
 
 </Project>

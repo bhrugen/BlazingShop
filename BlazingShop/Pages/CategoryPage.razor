@@ -6,7 +6,7 @@
 @*@inject AuthenticationStateProvider AuthenticationStateProvider*@
 
     <AuthorizeView>
-        <Authorized>
+        <Authorized Context="Auth">
             @if (categories == null)
             {
                 <p><em>Loading or No categories exist</em></p>
