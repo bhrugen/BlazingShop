@@ -50,30 +50,42 @@ else
 @if (ShowPopup)
 {
 <div class="modal" tabindex="-1" style="display:block" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="text-info">Category</h3>
-                <button type="button" class="close" @onclick="ClosePopup">
-                    <span aria-hidden="true">X</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-9">
-                        <div class="row py-2">
-                            <div class="col-4">
+    <EditForm Model="@objCategory" OnValidSubmit="@ValidSubmit">
 
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="text-info">Category</h3>
+                    <button type="button" class="close" @onclick="ClosePopup">
+                        <span aria-hidden="true">X</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-9">
+                            <div class="row py-2">
+                                <div class="col-4">
+                                    Category Name
+                                </div>
+                                <div class="col-8">
+                                    <input class="form-control" type="text" @bind="objCategory.Name" />
+                                </div>
                             </div>
-                            <div class="col-8">
+                            <div class="row py-2">
+                                <div class="col-4">
 
+                                </div>
+                                <div class="col-8">
+                                    <button class="btn btn-primary form-control" type="submit">Submit</button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+
+    </EditForm>
 </div>
 }
 
@@ -98,6 +110,15 @@ else
     void ClosePopup()
     {
         ShowPopup = false;
+    }
+
+    void ValidSubmit()
+    {
+        var result = false;
+        ShowPopup = false;
+        result = Service.CreateCategory(objCategory);
+
+        categories = Service.GetCategories();
     }
 
 }
