@@ -74,12 +74,18 @@ else
                                 </div>
                             </div>
                             <div class="row py-2">
-                                <div class="col-4">
 
-                                </div>
-                                <div class="col-8">
+                                <div class="offset-4 col">
                                     <button class="btn btn-primary form-control" type="submit">Submit</button>
                                 </div>
+                                @if (objCategory.Id > 0)
+                                {
+                                    <div class="col">
+                                        <button class="btn btn-danger form-control"
+                                                @onclick="DeleteCategory"
+                                                type="submit">Delete</button>
+                                    </div>
+                                }
                             </div>
                         </div>
                     </div>
@@ -116,6 +122,14 @@ else
         ShowPopup = true;
     }
 
+    void DeleteCategory()
+    {
+        ShowPopup = false;
+        Service.DeleteCategory(objCategory);
+        categories.Clear();
+        categories = Service.GetCategories();
+    }
+
     void ClosePopup()
     {
         ShowPopup = false;
@@ -135,7 +149,7 @@ else
         {
             result = Service.CreateCategory(objCategory);
         }
-        
+
 
         categories = Service.GetCategories();
     }
