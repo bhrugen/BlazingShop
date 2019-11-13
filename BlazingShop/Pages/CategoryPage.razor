@@ -4,8 +4,47 @@
 
 @inherits OwningComponentBase<CategoryService>
 
-<h3>CategoryPage</h3>
+@if (categories == null)
+{
+    <p><em>Loading or No categories exist</em></p>
+}
+else
+{
+    <div class="container border p-3">
+        <div class="row pt-4">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Category Name</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var obj in categories)
+                    {
+                    <tr>
+                        <td>@obj.Name</td>
+                        <td>
+                            <button class="btn btn-primary" style="width:150px">
+                                Edit
+                            </button>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+
+
 
 @code {
 
+    List<Category> categories;
+
+    protected override void OnInitialized()
+    {
+        categories = Service.GetCategories();
+    }
 }

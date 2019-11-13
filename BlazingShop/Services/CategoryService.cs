@@ -20,7 +20,7 @@ namespace BlazingShop.Services
             return _db.Categories.FirstOrDefault(u => u.Id == categoryId);
         }
 
-        public List<Category> GetCategories(int categoryId)
+        public List<Category> GetCategories()
         {
             
             return _db.Categories.ToList();
