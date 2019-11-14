@@ -1,5 +1,91 @@
-﻿<h3>AppointmentComponent</h3>
+﻿@using BlazingShop.Data
+@using BlazingShop.Services
+
+@inherits OwningComponentBase<AppointmentService>
+
+    <div class="p-4 border row">
+        <EditForm class="col-8" Model="@appointment" OnValidSubmit="@ValidSubmit">
+            <div class="form-group row">
+                <div class="col-8 offset-4">
+                    <DataAnnotationsValidator />
+                    <ValidationSummary />
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-4">
+                    Name
+                </div>
+                <div class="col-8">
+                    <input value="@appointment.CustomerName" class="form-control"  />
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-4">
+                    Email
+                </div>
+                <div class="col-8">
+                    <input value="@appointment.CustomerEmail" class="form-control"  />
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-4">
+                    Phone
+                </div>
+                <div class="col-8">
+                    <input value="@appointment.CustomerPhone" class="form-control"  />
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-4">
+                    Date
+                </div>
+                <div class="col-8">
+                    <input value="@appointment.AppointmentDate" class="form-control"  />
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-4 offset-4">
+                    <button @onclick="OnClickShowDetails" class="btn btn-success form-control">
+                        Back to Details
+                    </button>
+                </div>
+                <div class="col-4">
+                    <button class="btn btn-primary form-control">
+                        Book Now!
+                    </button>
+                </div>
+            </div>
+        </EditForm>
+        <div class="offset-1 col-3 ">
+            <img src="@convertImageToDisplay(appointment.Product.Image)"
+                 width="100%" style="border-radius:5px; border: 1px solid #bbb9b9" />
+        </div>
+    </div>
 
 @code {
+    [Parameter]
+    public Appointment appointment { get; set; }
 
+    [Parameter]
+    public EventCallback OnClickShowDetails { get; set; }
+
+    string convertImageToDisplay(byte[] image)
+    {
+        if (image != null)
+        {
+            var base64 = Convert.ToBase64String(image);
+            var finalStr = string.Format("data:image/jpg;base64,{0}", base64);
+            return finalStr;
+        }
+        return "";
+    }
+
+    private void ValidSubmit()
+    {
+        var result = Service.CreateAppointment(appointment);
+        if (result)
+        {
+
+        }
+    }
 }
