@@ -1,5 +1,75 @@
-﻿<h3>DetailsComponent</h3>
+﻿@using BlazingShop.Data
+@using BlazingShop.Services
+
+    <div class="p-4 border rounded row">
+        <div class="col-8">
+            <div class="form-group row">
+                <div class="col-4">
+                    Name
+                </div>
+                <div class="col-8">
+                    <input value="@appointment.Product.Name" class="form-control" readonly />
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-4">
+                    Shade Color
+                </div>
+                <div class="col-8">
+                    <input value="@appointment.Product.ShadeColor" class="form-control" readonly />
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-4">
+                    Price
+                </div>
+                <div class="col-8">
+                    <input value="@appointment.Product.Name" class="form-control" readonly />
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-4">
+                    Category Name
+                </div>
+                <div class="col-8">
+                    <input value="@appointment.Product.Category.Name" class="form-control" readonly />
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-4">
+                </div>
+                <div class="col-4">
+                    <a href="/" class="btn btn-success form-control">Back to List</a>
+                </div>
+                <div class="col-4">
+                    <button @onclick="OnClickShowAppointment" class="btn btn-primary form-control">
+                        Book Appointment
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="offset-1 col-3 ">
+            <img src="@convertImageToDisplay(appointment.Product.Image)"
+                 width="100%" style="border-radius:5px; border: 1px solid #bbb9b9" />
+        </div>
+        <br />
+    </div>
 
 @code {
+    [Parameter]
+    public Appointment appointment { get; set; }
 
+    [Parameter]
+    public EventCallback OnClickShowAppointment { get; set; }
+
+    string convertImageToDisplay(byte[] image)
+    {
+        if (image != null)
+        {
+            var base64 = Convert.ToBase64String(image);
+            var finalStr = string.Format("data:image/jpg;base64,{0}", base64);
+            return finalStr;
+        }
+        return "";
+    }
 }
