@@ -17,6 +17,8 @@ namespace BlazingShop.Services
 
         public bool CreateAppointment(Appointment appointment)
         {
+            appointment.ProductId = appointment.Product.Id;
+            appointment.Product = null;
             _db.Appointments.Add(appointment);
             _db.SaveChanges();
             return true;
